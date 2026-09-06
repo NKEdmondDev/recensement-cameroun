@@ -1,0 +1,48 @@
+<!-- =========================================================
+     OVERLAY MOBILE
+     ========================================================= -->
+
+<div
+  class="sidebar-overlay"
+  [class.active]="sidebarOpen"
+  (click)="closeSidebar()"
+  aria-hidden="true"
+></div>
+
+
+<!-- =========================================================
+     SIDEBAR
+     ========================================================= -->
+
+<app-sidebar
+  [open]="sidebarOpen"
+  (closeMenu)="closeSidebar()"
+></app-sidebar>
+
+
+<!-- =========================================================
+     CONTENU PRINCIPAL
+     ========================================================= -->
+
+<main class="main-content">
+
+  <app-navbar
+    [sidebarOpen]="sidebarOpen"
+    (menuToggle)="toggleSidebar()"
+  ></app-navbar>
+
+
+  <div class="page-content">
+
+    <router-outlet></router-outlet>
+
+  </div>
+
+</main>
+
+
+<!-- =========================================================
+     NOTIFICATIONS TOAST
+     ========================================================= -->
+
+<app-notifications></app-notifications>

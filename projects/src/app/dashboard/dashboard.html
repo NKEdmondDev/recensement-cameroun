@@ -1,0 +1,644 @@
+
+<section class="dashboard">
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+
+  <div class="page-header">
+
+    <div>
+      <p class="eyebrow">
+        VUE D'ENSEMBLE
+      </p>
+
+      <h1>
+        Tableau de bord
+      </h1>
+
+      <p class="subtitle">
+        Vue synthétique des données du recensement national.
+      </p>
+    </div>
+
+    <button
+      class="refresh-button"
+      type="button"
+      (click)="chargerStatistiques()"
+      [disabled]="loading"
+    >
+      <span class="refresh-icon">↻</span>
+      Actualiser
+    </button>
+
+  </div>
+
+
+  <!-- ============================================================
+       ERREUR
+       ============================================================ -->
+
+  @if (error) {
+
+    <div class="error-box">
+
+      <strong>
+        Erreur
+      </strong>
+
+      <span>
+        {{ error }}
+      </span>
+
+      <button
+        type="button"
+        (click)="chargerStatistiques()"
+      >
+        Réessayer
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ============================================================
+       LOADING
+       ============================================================ -->
+
+  @if (loading) {
+
+    <div class="stats-grid">
+
+      @for (item of [1, 2, 3, 4]; track item) {
+
+        <div class="stat-card skeleton-card">
+
+          <div class="skeleton skeleton-icon"></div>
+
+          <div class="skeleton-content">
+
+            <div class="skeleton skeleton-line small"></div>
+
+            <div class="skeleton skeleton-line large"></div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <div class="content-grid">
+
+      <div class="panel skeleton-panel"></div>
+
+      <div class="panel skeleton-panel"></div>
+
+    </div>
+
+  }
+
+
+  <!-- ============================================================
+       CONTENU PRINCIPAL
+       ============================================================ -->
+
+  @if (!loading && statistiques) {
+
+
+    <!-- ============================================================
+         CARTES STATISTIQUES
+         ============================================================ -->
+
+    <div class="stats-grid">
+
+
+      <!-- Population -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon population">
+          <span>👥</span>
+        </div>
+
+        <div class="stat-content">
+
+          <span class="stat-label">
+            Population totale
+          </span>
+
+          <strong class="stat-value">
+            {{ formatNombre(statistiques.populationTotale) }}
+          </strong>
+
+          <span class="stat-description">
+            personnes recensées
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- Ménages -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon menages">
+          <span>⌂</span>
+        </div>
+
+        <div class="stat-content">
+
+          <span class="stat-label">
+            Nombre de ménages
+          </span>
+
+          <strong class="stat-value">
+            {{ formatNombre(statistiques.nombreMenages) }}
+          </strong>
+
+          <span class="stat-description">
+            ménages enregistrés
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- Taille moyenne -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon average">
+          <span>⌁</span>
+        </div>
+
+        <div class="stat-content">
+
+          <span class="stat-label">
+            Taille moyenne
+          </span>
+
+          <strong class="stat-value">
+            {{ formatDecimal(statistiques.tailleMoyenneMenage) }}
+          </strong>
+
+          <span class="stat-description">
+            personnes par ménage
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- Zones -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon zones">
+          <span>⌖</span>
+        </div>
+
+        <div class="stat-content">
+
+          <span class="stat-label">
+            Zones couvertes
+          </span>
+
+          <strong class="stat-value">
+            {{ zonesCount }}
+          </strong>
+
+          <span class="stat-description">
+            zones recensées
+          </span>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- ============================================================
+         INFORMATIONS PRINCIPALES
+         ============================================================ -->
+
+    <div class="content-grid">
+
+
+      <!-- Zone principale -->
+
+      <article class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="panel-label">
+              ZONE PRINCIPALE
+            </span>
+
+            <h2>
+              {{ statistiques.zoneAvecPlusHabitants || '—' }}
+            </h2>
+
+          </div>
+
+          <div class="panel-badge">
+            Population
+          </div>
+
+        </div>
+
+
+        <div class="highlight">
+
+          <div class="highlight-icon">
+            👥
+          </div>
+
+          <div>
+
+            <strong>
+              Zone avec le plus d'habitants
+            </strong>
+
+            <p>
+              {{
+                statistiques.zoneAvecPlusHabitants
+                || 'Aucune donnée disponible'
+              }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- Structure par âge -->
+
+      <article class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="panel-label">
+              STRUCTURE PAR ÂGE
+            </span>
+
+            <h2>
+              Âge moyen
+            </h2>
+
+          </div>
+
+          <div class="age-icon">
+            ◷
+          </div>
+
+        </div>
+
+
+        <div class="age-grid">
+
+
+          <div class="age-item">
+
+            <span class="age-title">
+              Plus jeune
+            </span>
+
+            <strong>
+              {{
+                statistiques.zoneAvecAgeMoyenLePlusBas
+                || '—'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="age-item">
+
+            <span class="age-title">
+              Plus âgée
+            </span>
+
+            <strong>
+              {{
+                statistiques.zoneAvecAgeMoyenLePlusEleve
+                || '—'
+              }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- ============================================================
+         STATISTIQUES PAR ZONE
+         ============================================================ -->
+
+    <article class="panel zones-panel">
+
+      <div class="panel-header">
+
+        <div>
+
+          <span class="panel-label">
+            RÉPARTITION GÉOGRAPHIQUE
+          </span>
+
+          <h2>
+            Statistiques par zone
+          </h2>
+
+        </div>
+
+        <span class="zone-count">
+          {{ zonesCount }} zones
+        </span>
+
+      </div>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                ZONE
+              </th>
+
+              <th>
+                MÉNAGES
+              </th>
+
+              <th>
+                POPULATION
+              </th>
+
+              <th>
+                ÂGE MOYEN
+              </th>
+
+              <th>
+                TAILLE MOYENNE
+              </th>
+
+              <th>
+                SURPEUPLEMENT
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+              zone of statistiques.statistiquesParZone;
+              track zone.zone
+            ) {
+
+              <tr>
+
+
+                <!-- Zone -->
+
+                <td>
+
+                  <div class="zone-name">
+
+                    <span class="zone-dot"></span>
+
+                    <strong>
+                      {{ zone.zone }}
+                    </strong>
+
+                  </div>
+
+                </td>
+
+
+                <!-- Ménages -->
+
+                <td>
+                  {{ formatNombre(zone.nombreMenages) }}
+                </td>
+
+
+                <!-- Population -->
+
+                <td>
+
+                  <strong>
+                    {{ formatNombre(zone.populationTotale) }}
+                  </strong>
+
+                </td>
+
+
+                <!-- Age -->
+
+                <td>
+                  {{ formatDecimal(zone.ageMoyen) }} ans
+                </td>
+
+
+                <!-- Taille moyenne -->
+
+                <td>
+                  {{ formatDecimal(zone.tailleMoyenneMenage) }}
+                </td>
+
+
+                <!-- Surpeuplement -->
+
+                <td>
+
+                  <div class="progress-wrapper">
+
+                    <div class="progress">
+
+                      <span
+                        [style.width.%]="zone.tauxSurpeuplement"
+                      ></span>
+
+                    </div>
+
+                    <small>
+                      {{ formatDecimal(zone.tauxSurpeuplement) }}%
+                    </small>
+
+                  </div>
+
+                </td>
+
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </article>
+
+
+    <!-- ============================================================
+         TYPE DE LOGEMENT
+         ============================================================ -->
+
+    <article class="panel housing-panel">
+
+      <div class="panel-header">
+
+        <div>
+
+          <span class="panel-label">
+            HABITAT
+          </span>
+
+          <h2>
+            Type de logement dominant
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      @if (
+        statistiques.typeLogementDominantParZone
+        && (statistiques.typeLogementDominantParZone | keyvalue).length > 0
+      ) {
+
+        <div class="housing-grid">
+
+
+          @for (
+            logement of statistiques.typeLogementDominantParZone | keyvalue;
+            track logement.key
+          ) {
+
+            <div class="housing-card">
+
+              <div class="housing-icon">
+                ⌂
+              </div>
+
+              <div>
+
+                <span>
+                  {{ logement.key }}
+                </span>
+
+                <strong>
+                  {{ logement.value }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          }
+
+
+        </div>
+
+      }
+
+
+      @if (
+        !statistiques.typeLogementDominantParZone
+        || (statistiques.typeLogementDominantParZone | keyvalue).length === 0
+      ) {
+
+        <div class="empty-state">
+
+          <span>
+            Aucune donnée de logement disponible.
+          </span>
+
+        </div>
+
+      }
+
+    </article>
+
+
+    <!-- ============================================================
+         SURPEUPLEMENT
+         ============================================================ -->
+
+    <article class="alert-panel">
+
+
+      <div class="alert-icon">
+        !
+      </div>
+
+
+      <div class="alert-content">
+
+        <span>
+          SURPEUPLEMENT
+        </span>
+
+        <strong>
+          {{
+            statistiques.zoneAvecPlusFortTauxSurpeuplement
+            || '—'
+          }}
+        </strong>
+
+        <p>
+          Zone présentant le taux de surpeuplement
+          le plus élevé.
+        </p>
+
+      </div>
+
+
+      <div class="alert-value">
+
+        {{ formatDecimal(tauxSurpeuplementMoyen) }}%
+
+        <small>
+          moyenne
+        </small>
+
+      </div>
+
+
+    </article>
+
+
+  }
+
+</section>

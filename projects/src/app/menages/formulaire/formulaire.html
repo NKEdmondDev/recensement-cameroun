@@ -1,0 +1,366 @@
+<section class="form-page">
+
+  <!-- HEADER -->
+
+  <header class="page-header">
+
+    <div>
+
+      <a
+        routerLink="/menages"
+        class="back-link"
+      >
+        ← Retour aux ménages
+      </a>
+
+      <span class="eyebrow">
+        RECENSEMENT
+      </span>
+
+      <h1>
+        Nouveau ménage
+      </h1>
+
+      <p>
+        Enregistrez les informations du ménage recensé.
+      </p>
+
+    </div>
+
+  </header>
+
+
+  <!-- ERREUR SERVEUR -->
+
+  @if (error) {
+
+    <div class="error-box">
+
+      <div class="error-icon">
+        !
+      </div>
+
+      <div>
+
+        <strong>
+          Échec de l'enregistrement
+        </strong>
+
+        <p>
+          {{ error }}
+        </p>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- FORMULAIRE -->
+
+  <form
+    [formGroup]="formulaire"
+    (ngSubmit)="enregistrer()"
+    novalidate
+  >
+
+    <article class="form-card">
+
+      <div class="form-card-header">
+
+        <div>
+
+          <span class="section-label">
+            INFORMATIONS DU MÉNAGE
+          </span>
+
+          <h2>
+            Informations générales
+          </h2>
+
+          <p>
+            Tous les champs sont obligatoires.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-grid">
+
+
+        <!-- CHEF DE MENAGE -->
+
+        <div class="field">
+
+          <label for="chefMenage">
+            Chef de ménage
+          </label>
+
+          <input
+            id="chefMenage"
+            type="text"
+            formControlName="chefMenage"
+            placeholder="Ex. Jean Dupont"
+            autocomplete="name"
+          />
+
+          @if (
+            f['chefMenage'].invalid &&
+            (f['chefMenage'].touched || submitted)
+          ) {
+
+            <div class="field-error">
+
+              @if (f['chefMenage'].hasError('required')) {
+                Le nom du chef de ménage est obligatoire.
+              }
+
+              @if (f['chefMenage'].hasError('minlength')) {
+                Le nom doit contenir au moins 2 caractères.
+              }
+
+              @if (f['chefMenage'].hasError('maxlength')) {
+                Le nom ne peut pas dépasser 100 caractères.
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- ZONE -->
+
+        <div class="field">
+
+          <label for="zone">
+            Zone
+          </label>
+
+          <input
+            id="zone"
+            type="text"
+            formControlName="zone"
+            placeholder="Ex. Douala"
+          />
+
+          @if (
+            f['zone'].invalid &&
+            (f['zone'].touched || submitted)
+          ) {
+
+            <div class="field-error">
+
+              @if (f['zone'].hasError('required')) {
+                La zone est obligatoire.
+              }
+
+              @if (f['zone'].hasError('minlength')) {
+                La zone doit contenir au moins 2 caractères.
+              }
+
+              @if (f['zone'].hasError('maxlength')) {
+                La zone ne peut pas dépasser 100 caractères.
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- NOMBRE DE PERSONNES -->
+
+        <div class="field">
+
+          <label for="nombrePersonnes">
+            Nombre de personnes
+          </label>
+
+          <input
+            id="nombrePersonnes"
+            type="number"
+            formControlName="nombrePersonnes"
+            min="1"
+            max="30"
+            placeholder="Ex. 5"
+          />
+
+          @if (
+            f['nombrePersonnes'].invalid &&
+            (f['nombrePersonnes'].touched || submitted)
+          ) {
+
+            <div class="field-error">
+
+              @if (f['nombrePersonnes'].hasError('required')) {
+                Le nombre de personnes est obligatoire.
+              }
+
+              @if (f['nombrePersonnes'].hasError('min')) {
+                Le ménage doit contenir au moins 1 personne.
+              }
+
+              @if (f['nombrePersonnes'].hasError('max')) {
+                Le nombre maximum est de 30 personnes.
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- AGE MOYEN -->
+
+        <div class="field">
+
+          <label for="ageMoyen">
+            Âge moyen
+          </label>
+
+          <input
+            id="ageMoyen"
+            type="number"
+            formControlName="ageMoyen"
+            min="0"
+            max="120"
+            step="0.01"
+            placeholder="Ex. 32.5"
+          />
+
+          @if (
+            f['ageMoyen'].invalid &&
+            (f['ageMoyen'].touched || submitted)
+          ) {
+
+            <div class="field-error">
+
+              @if (f['ageMoyen'].hasError('required')) {
+                L'âge moyen est obligatoire.
+              }
+
+              @if (f['ageMoyen'].hasError('min')) {
+                L'âge moyen ne peut pas être négatif.
+              }
+
+              @if (f['ageMoyen'].hasError('max')) {
+                L'âge moyen ne peut pas dépasser 120 ans.
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- TYPE DE LOGEMENT -->
+
+        <div class="field field-full">
+
+          <label for="typeLogement">
+            Type de logement
+          </label>
+
+          <select
+            id="typeLogement"
+            formControlName="typeLogement"
+          >
+
+            <option value="">
+              Sélectionnez un type de logement
+            </option>
+
+            <option value="Maison">
+              Maison
+            </option>
+
+            <option value="Appartement">
+              Appartement
+            </option>
+
+            <option value="Studio">
+              Studio
+            </option>
+
+            <option value="Chambre">
+              Chambre
+            </option>
+
+            <option value="Autre">
+              Autre
+            </option>
+
+          </select>
+
+
+          @if (
+            f['typeLogement'].invalid &&
+            (f['typeLogement'].touched || submitted)
+          ) {
+
+            <div class="field-error">
+
+              @if (f['typeLogement'].hasError('required')) {
+                Le type de logement est obligatoire.
+              }
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="form-footer">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="annuler()"
+          [disabled]="loading"
+        >
+          Annuler
+        </button>
+
+
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="loading"
+        >
+
+          @if (loading) {
+
+            <span class="spinner"></span>
+
+            Enregistrement...
+
+          } @else {
+
+            <span>✓</span>
+
+            Enregistrer le ménage
+
+          }
+
+        </button>
+
+      </div>
+
+    </article>
+
+  </form>
+
+</section>

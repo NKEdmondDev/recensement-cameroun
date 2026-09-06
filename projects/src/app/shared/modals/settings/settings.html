@@ -1,0 +1,161 @@
+<section class="settings-page">
+
+  <!-- =====================================================
+       EN-TÊTE
+       ===================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        SYSTÈME
+      </span>
+
+      <h1>
+        Paramètres
+      </h1>
+
+      <p>
+        Configurez les préférences de l'application
+        de recensement.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="secondary-button"
+      (click)="reset()"
+    >
+
+      <i class="bi bi-arrow-counterclockwise"></i>
+
+      Réinitialiser
+
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       PARAMETRES
+       ===================================================== -->
+
+  <div class="settings-grid">
+
+
+    <!-- NOTIFICATIONS -->
+
+    <article class="settings-card">
+
+      <div class="card-icon">
+
+        <i class="bi bi-bell-fill"></i>
+
+      </div>
+
+
+      <div class="card-content">
+
+        <h2>
+          Notifications
+        </h2>
+
+        <p>
+          Affiche les notifications système et les
+          confirmations des opérations.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="toggle"
+        [class.active]="notificationsEnabled"
+        [attr.aria-pressed]="notificationsEnabled"
+        aria-label="Activer ou désactiver les notifications"
+        (click)="toggleNotifications()"
+      >
+
+        <span></span>
+
+      </button>
+
+    </article>
+
+
+    <!-- AFFICHAGE COMPACT -->
+
+    <article class="settings-card">
+
+      <div class="card-icon">
+
+        <i class="bi bi-layout-text-sidebar"></i>
+
+      </div>
+
+
+      <div class="card-content">
+
+        <h2>
+          Affichage compact
+        </h2>
+
+        <p>
+          Réduit l'espacement de certaines interfaces
+          afin d'afficher davantage de données.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="toggle"
+        [class.active]="compactMode"
+        [attr.aria-pressed]="compactMode"
+        aria-label="Activer ou désactiver le mode compact"
+        (click)="toggleCompactMode()"
+      >
+
+        <span></span>
+
+      </button>
+
+    </article>
+
+  </div>
+
+
+  <!-- =====================================================
+       INFORMATION
+       ===================================================== -->
+
+  <article class="information-card">
+
+    <div class="information-icon">
+
+      <i class="bi bi-info-circle"></i>
+
+    </div>
+
+
+    <div>
+
+      <strong>
+        Application de recensement
+      </strong>
+
+      <p>
+        Les préférences ci-dessus sont actuellement
+        conservées pendant la session.
+      </p>
+
+    </div>
+
+  </article>
+
+</section>

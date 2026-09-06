@@ -1,0 +1,266 @@
+.form-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #667085;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.back-link:hover {
+  color: #087f5b;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #087f5b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #172033;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.page-header p {
+  margin: 9px 0 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.error-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding: 15px 17px;
+  border: 1px solid #f1caca;
+  border-radius: 9px;
+  background: #fff6f6;
+  color: #9b2c2c;
+}
+
+.error-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #fbd5d5;
+  font-weight: 700;
+}
+
+.error-box strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 13px;
+}
+
+.error-box p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.form-card {
+  overflow: hidden;
+  border: 1px solid #e5e9ee;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 3px 15px rgba(20, 30, 45, 0.03);
+}
+
+.form-card-header {
+  padding: 25px 28px;
+  border-bottom: 1px solid #edf0f3;
+}
+
+.section-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #98a2b3;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 19px;
+}
+
+.form-card-header p {
+  margin: 6px 0 0;
+  color: #718096;
+  font-size: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  padding: 28px;
+}
+
+.field {
+  min-width: 0;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #344054;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  padding: 0 13px;
+  border: 1px solid #d9dee5;
+  border-radius: 7px;
+  outline: none;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+  font-size: 13px;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #087f5b;
+  box-shadow: 0 0 0 3px rgba(8, 127, 91, 0.08);
+}
+
+.field input.ng-invalid.ng-touched,
+.field select.ng-invalid.ng-touched {
+  border-color: #e05252;
+}
+
+.field-error {
+  margin-top: 6px;
+  color: #c53030;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px;
+  border-top: 1px solid #edf0f3;
+  background: #fafbfc;
+}
+
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 17px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-button {
+  border: 1px solid #087f5b;
+  background: #087f5b;
+  color: white;
+}
+
+.primary-button:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.secondary-button {
+  border: 1px solid #d9dee5;
+  background: white;
+  color: #475467;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+
+  .form-page {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .field-full {
+    grid-column: auto;
+  }
+
+  .form-card-header {
+    padding: 20px;
+  }
+
+  .form-footer {
+    flex-direction: column-reverse;
+    padding: 18px 20px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+
+}

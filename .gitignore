@@ -1,0 +1,23 @@
+# Angular
+projects/node_modules/
+projects/.angular/
+projects/dist/
+
+# Spring Boot / Maven
+recensement-cameroun/target/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

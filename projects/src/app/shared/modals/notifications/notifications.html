@@ -1,0 +1,66 @@
+@if (notificationService.toast(); as item) {
+
+  <div
+    class="notification"
+    [class.success]="item.type === 'success'"
+    [class.error]="item.type === 'error'"
+    [class.warning]="item.type === 'warning'"
+    [class.info]="item.type === 'info'"
+  >
+
+    <div class="notification-accent"></div>
+
+
+    <div class="notification-icon">
+
+      @if (item.type === 'success') {
+        <i class="bi bi-check-lg"></i>
+      }
+
+      @if (item.type === 'error') {
+        <i class="bi bi-x-lg"></i>
+      }
+
+      @if (item.type === 'warning') {
+        <i class="bi bi-exclamation-lg"></i>
+      }
+
+      @if (item.type === 'info') {
+        <i class="bi bi-info-lg"></i>
+      }
+
+    </div>
+
+
+    <div class="notification-content">
+
+      <strong>
+        {{ item.title }}
+      </strong>
+
+      <span>
+        {{ item.message }}
+      </span>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="close-button"
+      aria-label="Fermer"
+      (click)="
+        notificationService.closeToast()
+      "
+    >
+
+      <i class="bi bi-x-lg"></i>
+
+    </button>
+
+
+    <div class="notification-progress"></div>
+
+  </div>
+
+}

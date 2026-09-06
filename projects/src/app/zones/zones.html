@@ -1,0 +1,377 @@
+<section class="zones-page">
+
+  <!-- HEADER -->
+  <header class="page-header">
+
+    <div class="header-content">
+
+      <span class="eyebrow">
+        COUVERTURE GÉOGRAPHIQUE
+      </span>
+
+      <h1>Zones</h1>
+
+      <p>
+        Consultez la répartition des ménages et de la population
+        dans les différentes zones recensées.
+      </p>
+
+    </div>
+
+    <button
+      class="refresh-button"
+      type="button"
+      (click)="chargerZones()"
+      [disabled]="loading"
+    >
+      <i class="bi bi-arrow-clockwise"></i>
+
+      <span>
+        {{ loading ? 'Actualisation...' : 'Actualiser' }}
+      </span>
+    </button>
+
+  </header>
+
+
+  <!-- ERREUR -->
+  @if (error) {
+
+    <div class="error-box">
+
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+
+      <div>
+        <strong>Impossible de charger les zones</strong>
+        <p>{{ error }}</p>
+      </div>
+
+      <button
+        type="button"
+        (click)="chargerZones()"
+      >
+        Réessayer
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- LOADING -->
+  @if (loading) {
+
+    <div class="summary-grid">
+
+      @for (item of [1, 2, 3, 4]; track item) {
+
+        <div class="summary-card skeleton-card">
+
+          <div class="skeleton skeleton-icon"></div>
+
+          <div class="skeleton-content">
+
+            <div class="skeleton skeleton-small"></div>
+
+            <div class="skeleton skeleton-large"></div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+
+  @if (!loading) {
+
+    <!-- SUMMARY -->
+    <div class="summary-grid">
+
+      <article class="summary-card">
+
+        <div class="summary-icon zones-icon">
+          <i class="bi bi-geo-alt-fill"></i>
+        </div>
+
+        <div>
+          <span>Zones recensées</span>
+
+          <strong>
+            {{ zones.length }}
+          </strong>
+        </div>
+
+      </article>
+
+
+      <article class="summary-card">
+
+        <div class="summary-icon population-icon">
+          <i class="bi bi-people-fill"></i>
+        </div>
+
+        <div>
+          <span>Population</span>
+
+          <strong>
+            {{ formatNombre(populationTotale) }}
+          </strong>
+        </div>
+
+      </article>
+
+
+      <article class="summary-card">
+
+        <div class="summary-icon menages-icon">
+          <i class="bi bi-house-fill"></i>
+        </div>
+
+        <div>
+          <span>Ménages</span>
+
+          <strong>
+            {{ formatNombre(nombreMenages) }}
+          </strong>
+        </div>
+
+      </article>
+
+
+      <article class="summary-card">
+
+        <div class="summary-icon warning-icon">
+          <i class="bi bi-bar-chart-fill"></i>
+        </div>
+
+        <div>
+          <span>Surpeuplement moyen</span>
+
+          <strong>
+            {{ formatDecimal(tauxSurpeuplementMoyen) }}%
+          </strong>
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- ZONES TABLE -->
+    <article class="zones-panel">
+
+      <div class="panel-header">
+
+        <div>
+
+          <span class="panel-label">
+            RÉPARTITION GÉOGRAPHIQUE
+          </span>
+
+          <h2>
+            Liste des zones
+          </h2>
+
+          <p>
+            Données statistiques disponibles par zone.
+          </p>
+
+        </div>
+
+
+        <div class="zone-counter">
+          {{ zonesFiltrees.length }}
+          zone{{ zonesFiltrees.length > 1 ? 's' : '' }}
+        </div>
+
+      </div>
+
+
+      <!-- SEARCH -->
+      <div class="toolbar">
+
+        <div class="search-box">
+
+          <i class="bi bi-search"></i>
+
+          <input
+            type="text"
+            placeholder="Rechercher une zone..."
+            [(ngModel)]="searchTerm"
+          />
+
+          @if (searchTerm) {
+
+            <button
+              type="button"
+              class="clear-search"
+              (click)="searchTerm = ''"
+              aria-label="Effacer"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      @if (zonesFiltrees.length > 0) {
+
+        <div class="table-wrapper">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>ZONE</th>
+
+                <th>MÉNAGES</th>
+
+                <th>POPULATION</th>
+
+                <th>ÂGE MOYEN</th>
+
+                <th>TAILLE MOYENNE</th>
+
+                <th>SURPEUPLEMENT</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (
+                zone of zonesFiltrees;
+                track zone.zone
+              ) {
+
+                <tr>
+
+                  <td>
+
+                    <div class="zone-name">
+
+                      <span class="zone-marker">
+                        <i class="bi bi-geo-alt-fill"></i>
+                      </span>
+
+                      <strong>
+                        {{ zone.zone }}
+                      </strong>
+
+                    </div>
+
+                  </td>
+
+
+                  <td>
+                    {{ formatNombre(zone.nombreMenages) }}
+                  </td>
+
+
+                  <td>
+
+                    <strong>
+                      {{ formatNombre(zone.populationTotale) }}
+                    </strong>
+
+                  </td>
+
+
+                  <td>
+                    {{ formatDecimal(zone.ageMoyen) }}
+                    ans
+                  </td>
+
+
+                  <td>
+                    {{ formatDecimal(zone.tailleMoyenneMenage) }}
+                  </td>
+
+
+                  <td>
+
+                    <div class="progress-cell">
+
+                      <div class="progress">
+
+                        <span
+                          [class]="tauxClasse(zone.tauxSurpeuplement)"
+                          [style.width.%]="
+                            Math.min(
+                              Number(zone.tauxSurpeuplement || 0),
+                              100
+                            )
+                          "
+                        ></span>
+
+                      </div>
+
+                      <strong>
+                        {{ formatDecimal(zone.tauxSurpeuplement) }}%
+                      </strong>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      }
+
+
+      @if (zonesFiltrees.length === 0) {
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            <i class="bi bi-geo-alt"></i>
+          </div>
+
+          <h3>Aucune zone trouvée</h3>
+
+          <p>
+            Aucune zone ne correspond à votre recherche.
+          </p>
+
+          @if (searchTerm) {
+
+            <button
+              type="button"
+              (click)="searchTerm = ''"
+            >
+              Réinitialiser la recherche
+            </button>
+
+          }
+
+        </div>
+
+      }
+
+    </article>
+
+  }
+
+</section>

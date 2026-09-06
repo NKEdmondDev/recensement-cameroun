@@ -1,0 +1,220 @@
+<div class="notifications-page">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div class="header-content">
+      <div class="header-icon">
+        <span>🔔</span>
+      </div>
+
+      <div>
+        <h1>Notifications</h1>
+
+        <p>
+          Consultez toutes vos notifications et informations système.
+        </p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+
+      @if (unreadCount > 0) {
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="markAllAsRead()"
+        >
+          ✓ Tout marquer comme lu
+        </button>
+      }
+
+      @if (notifications.length > 0) {
+        <button
+          type="button"
+          class="btn-danger-outline"
+          (click)="clearAll()"
+        >
+          🗑 Tout supprimer
+        </button>
+      }
+
+    </div>
+  </div>
+
+
+  <!-- Statistics -->
+  <div class="notification-stats">
+
+    <div class="stat-card">
+      <div class="stat-icon total">
+        🔔
+      </div>
+
+      <div>
+        <span class="stat-label">Total</span>
+        <strong>{{ notifications.length }}</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon unread">
+        ●
+      </div>
+
+      <div>
+        <span class="stat-label">Non lues</span>
+        <strong>{{ unreadCount }}</strong>
+      </div>
+    </div>
+
+
+    <div class="stat-card">
+      <div class="stat-icon read">
+        ✓
+      </div>
+
+      <div>
+        <span class="stat-label">Lues</span>
+        <strong>{{ notifications.length - unreadCount }}</strong>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Liste -->
+  <div class="notifications-container">
+
+    @if (notifications.length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          🔔
+        </div>
+
+        <h2>Aucune notification</h2>
+
+        <p>
+          Vous n'avez actuellement aucune notification.
+        </p>
+
+        <a
+          routerLink="/dashboard"
+          class="btn-primary"
+        >
+          Retour au tableau de bord
+        </a>
+
+      </div>
+
+    } @else {
+
+      <div class="notifications-list">
+
+        @for (
+          notification of notifications;
+          track notification.id
+        ) {
+
+          <article
+            class="notification-item"
+            [class.unread]="!notification.read"
+            [class.success]="notification.type === 'success'"
+            [class.error]="notification.type === 'error'"
+            [class.warning]="notification.type === 'warning'"
+            [class.info]="notification.type === 'info'"
+            (click)="markAsRead(notification)"
+          >
+
+            <!-- Icône -->
+            <div class="notification-icon">
+              {{ getIcon(notification.type) }}
+            </div>
+
+
+            <!-- Contenu -->
+            <div class="notification-content">
+
+              <div class="notification-top">
+
+                <h3>
+                  {{ notification.title }}
+                </h3>
+
+                @if (!notification.read) {
+                  <span class="unread-badge">
+                    Non lue
+                  </span>
+                }
+
+              </div>
+
+
+              <p>
+                {{ notification.message }}
+              </p>
+
+
+              <div class="notification-meta">
+
+                <span>
+                  {{ getTypeLabel(notification.type) }}
+                </span>
+
+                <span>
+                  •
+                </span>
+
+                <span>
+                  {{ notification.createdAt | date:'dd/MM/yyyy à HH:mm' }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div
+              class="notification-actions"
+              (click)="$event.stopPropagation()"
+            >
+
+              @if (!notification.read) {
+
+                <button
+                  type="button"
+                  class="action-btn"
+                  title="Marquer comme lu"
+                  (click)="markAsRead(notification)"
+                >
+                  ✓
+                </button>
+
+              }
+
+              <button
+                type="button"
+                class="action-btn delete"
+                title="Supprimer"
+                (click)="remove(notification)"
+              >
+                🗑
+              </button>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

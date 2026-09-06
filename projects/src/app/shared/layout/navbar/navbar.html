@@ -1,0 +1,408 @@
+<header class="navbar">
+
+  <!-- =====================================================
+       MENU MOBILE
+       ===================================================== -->
+
+  <button
+    type="button"
+    class="mobile-menu-button"
+    [class.active]="sidebarOpen"
+    [attr.aria-expanded]="sidebarOpen"
+    [attr.aria-label]="sidebarOpen
+      ? 'Fermer le menu'
+      : 'Ouvrir le menu'"
+    (click)="toggleMenu()"
+  >
+    <i
+      class="bi"
+      [class.bi-list]="!sidebarOpen"
+      [class.bi-x-lg]="sidebarOpen"
+    ></i>
+  </button>
+
+
+  <!-- =====================================================
+       BREADCRUMB
+       ===================================================== -->
+
+  <div class="breadcrumb">
+
+    <span class="breadcrumb-root">
+      Recensement
+    </span>
+
+    <span class="breadcrumb-separator">
+      /
+    </span>
+
+    <span class="breadcrumb-current">
+      Administration
+    </span>
+
+  </div>
+
+
+  <!-- =====================================================
+       RECHERCHE
+       ===================================================== -->
+
+  <div class="navbar-search">
+
+    <i class="bi bi-search search-icon"></i>
+
+    <input
+      type="search"
+      placeholder="Rechercher..."
+      aria-label="Rechercher"
+    />
+
+    <div class="search-shortcut">
+      <span>Ctrl</span>
+      <span>K</span>
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       DROITE
+       ===================================================== -->
+
+  <div class="navbar-right">
+
+
+    <!-- ===================================================
+         NOTIFICATIONS
+         =================================================== -->
+
+    <div class="notification-area">
+
+      <button
+        type="button"
+        class="notification-button"
+        [class.has-notifications]="
+          notificationService.unreadCount() > 0
+        "
+        [class.open]="notificationsOpen"
+        [attr.aria-expanded]="notificationsOpen"
+        aria-label="Notifications"
+        (click)="
+          $event.stopPropagation();
+          toggleNotifications()
+        "
+      >
+
+        <i class="bi bi-bell-fill"></i>
+
+        @if (notificationService.unreadCount() > 0) {
+
+          <span class="notification-badge">
+
+            {{
+              notificationService.unreadCount() > 99
+                ? '99+'
+                : notificationService.unreadCount()
+            }}
+
+          </span>
+
+        }
+
+      </button>
+
+
+      <!-- ===============================================
+           PANNEAU NOTIFICATIONS
+           =============================================== -->
+
+      @if (notificationsOpen) {
+
+        <div
+          class="notifications-panel"
+          (click)="$event.stopPropagation()"
+        >
+
+          <div class="notifications-header">
+
+            <div>
+
+              <strong>
+                Notifications
+              </strong>
+
+              <span>
+                @if (
+                  notificationService.unreadCount() > 0
+                ) {
+                  {{
+                    notificationService.unreadCount()
+                  }}
+                  non lue(s)
+                } @else {
+                  Tout est à jour
+                }
+              </span>
+
+            </div>
+
+            @if (
+              notificationService.unreadCount() > 0
+            ) {
+
+              <button
+                type="button"
+                class="mark-all-button"
+                (click)="markAllAsRead()"
+              >
+                Tout lire
+              </button>
+
+            }
+
+          </div>
+
+
+          <!-- =============================================
+               LISTE
+               ============================================= -->
+
+          <div class="notifications-list">
+
+            @if (
+              notificationService.notifications().length === 0
+            ) {
+
+              <div class="notifications-empty">
+
+                <div class="empty-icon">
+                  <i class="bi bi-bell-slash"></i>
+                </div>
+
+                <strong>
+                  Aucune notification
+                </strong>
+
+                <span>
+                  Vous êtes à jour.
+                </span>
+
+              </div>
+
+            } @else {
+
+              @for (
+                item of notificationService.notifications();
+                track item.id
+              ) {
+
+                <div
+                  class="notification-item"
+                  [class.unread]="!item.read"
+                  [class.success]="item.type === 'success'"
+                  [class.error]="item.type === 'error'"
+                  [class.warning]="item.type === 'warning'"
+                  [class.info]="item.type === 'info'"
+                  (click)="markAsRead(item.id)"
+                >
+
+                  <div class="notification-item-icon">
+
+                    @if (item.type === 'success') {
+                      <i class="bi bi-check-lg"></i>
+                    }
+
+                    @if (item.type === 'error') {
+                      <i class="bi bi-x-lg"></i>
+                    }
+
+                    @if (item.type === 'warning') {
+                      <i class="bi bi-exclamation-lg"></i>
+                    }
+
+                    @if (item.type === 'info') {
+                      <i class="bi bi-info-lg"></i>
+                    }
+
+                  </div>
+
+
+                  <div class="notification-item-content">
+
+                    <div class="notification-item-top">
+
+                      <strong>
+                        {{ item.title }}
+                      </strong>
+
+                      @if (!item.read) {
+                        <span class="unread-dot"></span>
+                      }
+
+                    </div>
+
+                    <span class="notification-message">
+                      {{ item.message }}
+                    </span>
+
+                    <span class="notification-time">
+                      À l'instant
+                    </span>
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    class="notification-remove"
+                    aria-label="Supprimer"
+                    (click)="
+                      $event.stopPropagation();
+                      removeNotification(item.id)
+                    "
+                  >
+                    <i class="bi bi-x"></i>
+                  </button>
+
+                </div>
+
+              }
+
+            }
+
+          </div>
+
+
+          <!-- =============================================
+               FOOTER
+               ============================================= -->
+
+          @if (
+            notificationService.notifications().length > 0
+          ) {
+
+            <div class="notifications-footer">
+
+              <a
+                routerLink="/notifications"
+                class="view-all-notifications"
+                (click)="
+                  notificationsOpen = false
+                "
+              >
+                Voir toutes les notifications
+
+                <i class="bi bi-arrow-right"></i>
+
+              </a>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <div class="navbar-divider"></div>
+
+
+    <!-- ===================================================
+         PROFIL
+         =================================================== -->
+
+    <div class="profile-area">
+
+      <button
+        type="button"
+        class="profile-button"
+        [class.open]="profileOpen"
+        [attr.aria-expanded]="profileOpen"
+        (click)="
+          $event.stopPropagation();
+          toggleProfile()
+        "
+      >
+
+        <div class="profile-avatar">
+          A
+        </div>
+
+        <div class="profile-information">
+
+          <strong>
+            Administrateur
+          </strong>
+
+          <span>
+            Gestionnaire
+          </span>
+
+        </div>
+
+        <i
+          class="bi bi-chevron-down profile-chevron"
+        ></i>
+
+      </button>
+
+
+      <!-- MENU PROFIL -->
+
+      @if (profileOpen) {
+
+        <div
+          class="profile-menu"
+          (click)="$event.stopPropagation()"
+        >
+
+          <div class="profile-menu-header">
+
+            <div class="profile-menu-avatar">
+              A
+            </div>
+
+            <div>
+
+              <strong>
+                Administrateur
+              </strong>
+
+              <span>
+                Gestionnaire
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            (click)="closeProfile()"
+          >
+            <i class="bi bi-person"></i>
+            <span>Mon profil</span>
+          </button>
+
+
+          <button
+            type="button"
+            (click)="closeProfile()"
+          >
+            <i class="bi bi-gear"></i>
+            <span>Paramètres</span>
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</header>

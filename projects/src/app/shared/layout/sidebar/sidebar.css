@@ -1,0 +1,647 @@
+:host {
+  display: block;
+
+  width: 260px;
+  height: 100vh;
+
+  flex: 0 0 260px;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+  position: fixed;
+
+  inset: 0 auto 0 0;
+
+  width: 260px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border-right: 1px solid #e8eaed;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  z-index: 2000;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.brand {
+  min-height: 82px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 16px 0 22px;
+
+  border-bottom: 1px solid #f0f1f3;
+
+  flex-shrink: 0;
+
+  box-sizing: border-box;
+}
+
+
+.brand-logo {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   DRAPEAU CAMEROUN
+   ========================================================= */
+
+.flag-cm {
+  position: relative;
+
+  width: 38px;
+  height: 25px;
+
+  display: flex;
+
+  overflow: hidden;
+
+  flex-shrink: 0;
+
+  border-radius: 2px;
+
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.flag-cm > span {
+  flex: 1;
+
+  width: 33.333%;
+  height: 100%;
+}
+
+.flag-cm .green {
+  background: #168a45;
+}
+
+.flag-cm .red {
+  position: relative;
+
+  background: #d71920;
+}
+
+.flag-cm .yellow {
+  background: #f7d117;
+}
+
+
+/* ÉTOILE JAUNE */
+
+.flag-cm .red::after {
+  content: "★";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -54%);
+
+  color: #f7d117;
+
+  font-size: 11px;
+  line-height: 1;
+}
+
+
+/* PETIT DRAPEAU */
+
+.flag-cm.small {
+  width: 30px;
+  height: 20px;
+}
+
+.flag-cm.small .red::after {
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   BRAND TEXT
+   ========================================================= */
+
+.brand-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  line-height: 1.2;
+}
+
+.brand-text strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #17202a;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.brand-text span {
+  margin-top: 3px;
+
+  color: #7b8490;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.sidebar-close {
+  display: none;
+
+  flex: 0 0 36px;
+
+  width: 36px;
+  height: 36px;
+
+  margin-left: auto;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e4e7ea;
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #59626b;
+
+  cursor: pointer;
+}
+
+.sidebar-close:hover {
+  background: #f5f7f8;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.navigation {
+  flex: 1;
+
+  min-height: 0;
+
+  padding: 24px 14px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+
+  box-sizing: border-box;
+}
+
+
+.nav-section {
+  margin-bottom: 28px;
+}
+
+
+.section-title {
+  display: block;
+
+  padding: 0 12px;
+
+  margin-bottom: 10px;
+
+  color: #9ba3ad;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   NAV ITEMS
+   ========================================================= */
+
+.nav-item {
+  width: 100%;
+  min-height: 44px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 12px;
+
+  margin-bottom: 4px;
+
+  border-radius: 8px;
+
+  box-sizing: border-box;
+
+  color: #68717d;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.nav-item:hover {
+  background: #f5f7f8;
+
+  color: #1c252f;
+}
+
+.nav-item.active {
+  background: #edf8f1;
+
+  color: #168a45;
+
+  font-weight: 600;
+}
+
+
+.nav-icon {
+  flex: 0 0 18px;
+
+  width: 18px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.sidebar-footer {
+  flex-shrink: 0;
+
+  padding: 16px;
+
+  border-top: 1px solid #f0f1f3;
+
+  background: #ffffff;
+
+  box-sizing: border-box;
+}
+
+
+.country-badge {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px;
+
+  background: #f8f9fa;
+
+  border-radius: 8px;
+
+  box-sizing: border-box;
+}
+
+
+.country-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+.country-text strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #303842;
+
+  font-size: 11px;
+}
+
+.country-text span {
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #9299a2;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  :host {
+    width: min(290px, 86vw);
+    height: 100vh;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    z-index: 2000;
+
+    transform: translateX(-100%);
+
+    transition: transform 0.25s ease;
+
+    flex: none;
+  }
+
+
+  :host.open {
+    transform: translateX(0);
+  }
+
+
+  .sidebar {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    box-shadow:
+      10px 0 35px rgba(15, 23, 42, 0.16);
+  }
+
+
+  .sidebar-close {
+    display: flex;
+  }
+
+
+  .brand {
+    min-height: 70px;
+
+    padding-left: 16px;
+  }
+
+
+  .navigation {
+    padding: 20px 14px;
+  }
+}
+
+
+/* =========================================================
+   PETIT MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .brand {
+    min-height: 64px;
+
+    padding:
+      0
+      12px
+      0
+      15px;
+  }
+
+  .navigation {
+    padding:
+      18px
+      12px;
+  }
+
+  .sidebar-footer {
+    padding: 12px;
+  }
+}
+
+
+/* =========================================================
+   TRÈS PETIT MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  :host {
+    width: 86vw;
+  }
+
+  .brand-text strong {
+    font-size: 14px;
+  }
+
+  .nav-item {
+    min-height: 46px;
+  }
+}
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+.notification-nav-item {
+  position: relative;
+}
+
+
+/* Icône */
+
+.notification-icon-wrapper {
+  position: relative;
+
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+/* Point rouge animé */
+
+.notification-ping {
+  position: absolute;
+
+  top: -2px;
+  right: -3px;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #dc3545;
+
+  border: 2px solid #fff;
+
+  animation: notification-ping-animation 1.6s infinite;
+}
+
+
+@keyframes notification-ping-animation {
+
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(220, 53, 69, .45);
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 6px rgba(220, 53, 69, 0);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(220, 53, 69, 0);
+  }
+
+}
+
+
+/* Badge */
+
+.sidebar-notification-badge {
+  min-width: 20px;
+  height: 20px;
+
+  padding: 0 5px;
+
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background: #dc3545;
+
+  color: #fff;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  box-shadow:
+    0 3px 10px rgba(220, 53, 69, .25);
+
+  animation: notification-badge-animation .35s ease;
+}
+
+
+@keyframes notification-badge-animation {
+
+  0% {
+    opacity: 0;
+    transform: scale(.4);
+  }
+
+  70% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+}
+
+
+/* Texte */
+
+.notification-text {
+  transition:
+    transform .2s ease;
+}
+
+
+.notification-nav-item:hover .notification-text {
+  transform: translateX(2px);
+}
+
+
+/* Lorsque la page Notifications est active */
+
+.notification-nav-item.active
+.sidebar-notification-badge {
+  background: #168a45;
+}
+
+
+/* Accessibilité */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .notification-ping,
+  .sidebar-notification-badge {
+    animation: none;
+  }
+
+}
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  :host {
+    transition: none;
+  }
+
+  .nav-item {
+    transition: none;
+  }
+}

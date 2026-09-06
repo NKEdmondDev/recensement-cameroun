@@ -1,0 +1,482 @@
+ey
+<section class="detail-page">
+
+  <!-- =========================
+       EN-TÊTE
+       ========================= -->
+
+  <div class="page-header">
+
+    <div class="header-left">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="retourListe()"
+        aria-label="Retour à la liste des ménages"
+      >
+        <i class="bi bi-arrow-left"></i>
+      </button>
+
+      <div>
+        <p class="eyebrow">
+          MÉNAGES
+        </p>
+
+        <h1>
+          Détail du ménage
+        </h1>
+
+        <p class="subtitle">
+          Consultez l'ensemble des informations enregistrées.
+        </p>
+      </div>
+
+    </div>
+
+    @if (menage) {
+
+      <div class="header-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="retourListe()"
+        >
+          <i class="bi bi-arrow-left"></i>
+          Retour
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="modifier()"
+        >
+          <i class="bi bi-pencil-square"></i>
+          Modifier
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- =========================
+       CHARGEMENT
+       ========================= -->
+
+  @if (loading) {
+
+    <div class="loading-container">
+
+      <div class="loading-card">
+
+        <div class="skeleton skeleton-avatar"></div>
+
+        <div class="loading-lines">
+
+          <div class="skeleton skeleton-line title"></div>
+
+          <div class="skeleton skeleton-line"></div>
+
+          <div class="skeleton skeleton-line short"></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="information-grid">
+
+        @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+
+          <div class="information-card skeleton-information">
+
+            <div class="skeleton skeleton-small"></div>
+
+            <div class="skeleton skeleton-value"></div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       ERREUR
+       ========================= -->
+
+  @if (!loading && error) {
+
+    <div class="error-state">
+
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+
+      <div class="error-content">
+
+        <h2>
+          Impossible de charger le ménage
+        </h2>
+
+        <p>
+          {{ error }}
+        </p>
+
+      </div>
+
+      <div class="error-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="retourListe()"
+        >
+          <i class="bi bi-arrow-left"></i>
+          Retour
+        </button>
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="chargerMenage()"
+        >
+          <i class="bi bi-arrow-clockwise"></i>
+          Réessayer
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       CONTENU
+       ========================= -->
+
+  @if (!loading && !error && menage) {
+
+    <!-- =========================
+         IDENTITÉ
+         ========================= -->
+
+    <article class="profile-card">
+
+      <div class="profile-main">
+
+        <div class="profile-avatar">
+          <i class="bi bi-person"></i>
+        </div>
+
+        <div class="profile-information">
+
+          <span class="profile-label">
+            CHEF DE MÉNAGE
+          </span>
+
+          <h2>
+            {{ menage.chefMenage }}
+          </h2>
+
+          <div class="profile-meta">
+
+            <span>
+              <i class="bi bi-hash"></i>
+              Ménage #{{ menage.id }}
+            </span>
+
+            <span>
+              <i class="bi bi-geo-alt"></i>
+              {{ menage.zone }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="profile-status">
+        <span class="status-dot"></span>
+        Enregistré
+      </div>
+
+    </article>
+
+
+    <!-- =========================
+         INFORMATIONS PRINCIPALES
+         ========================= -->
+
+    <div class="section-heading">
+
+      <div>
+        <span class="section-label">
+          INFORMATIONS DU MÉNAGE
+        </span>
+
+        <h2>
+          Informations principales
+        </h2>
+      </div>
+
+    </div>
+
+
+    <div class="information-grid">
+
+      <!-- Population -->
+
+      <article class="information-card">
+
+        <div class="information-icon population">
+          <i class="bi bi-people"></i>
+        </div>
+
+        <div class="information-content">
+
+          <span>
+            Nombre de personnes
+          </span>
+
+          <strong>
+            {{ formatNombre(menage.nombrePersonnes) }}
+          </strong>
+
+          <small>
+            personnes dans le ménage
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- Âge -->
+
+      <article class="information-card">
+
+        <div class="information-icon age">
+          <i class="bi bi-person-vcard"></i>
+        </div>
+
+        <div class="information-content">
+
+          <span>
+            Âge moyen
+          </span>
+
+          <strong>
+            {{ formatDecimal(menage.ageMoyen) }}
+          </strong>
+
+          <small>
+            ans
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- Zone -->
+
+      <article class="information-card">
+
+        <div class="information-icon zone">
+          <i class="bi bi-geo-alt"></i>
+        </div>
+
+        <div class="information-content">
+
+          <span>
+            Zone
+          </span>
+
+          <strong>
+            {{ menage.zone }}
+          </strong>
+
+          <small>
+            zone de recensement
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- Logement -->
+
+      <article class="information-card">
+
+        <div class="information-icon housing">
+          <i class="bi bi-house"></i>
+        </div>
+
+        <div class="information-content">
+
+          <span>
+            Type de logement
+          </span>
+
+          <strong>
+            {{ menage.typeLogement }}
+          </strong>
+
+          <small>
+            logement principal
+          </small>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- =========================
+         INFORMATIONS ADMINISTRATIVES
+         ========================= -->
+
+    <article class="panel">
+
+      <div class="panel-header">
+
+        <div>
+
+          <span class="section-label">
+            INFORMATIONS ADMINISTRATIVES
+          </span>
+
+          <h2>
+            Suivi de l'enregistrement
+          </h2>
+
+        </div>
+
+        <div class="panel-icon">
+          <i class="bi bi-clock-history"></i>
+        </div>
+
+      </div>
+
+
+      <div class="dates-grid">
+
+        <div class="date-item">
+
+          <div class="date-icon">
+            <i class="bi bi-calendar-plus"></i>
+          </div>
+
+          <div>
+
+            <span>
+              Date de création
+            </span>
+
+            <strong>
+              {{ formatDate(menage.dateCreation) }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="date-item">
+
+          <div class="date-icon">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+
+          <div>
+
+            <span>
+              Dernière modification
+            </span>
+
+            <strong>
+              {{ formatDate(menage.dateDerniereModification) }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- =========================
+         RÉSUMÉ
+         ========================= -->
+
+    <article class="summary-panel">
+
+      <div class="summary-icon">
+        <i class="bi bi-info-circle"></i>
+      </div>
+
+      <div class="summary-content">
+
+        <span>
+          RÉSUMÉ
+        </span>
+
+        <p>
+          Le ménage de
+          <strong>{{ menage.chefMenage }}</strong>
+          est enregistré dans la zone
+          <strong>{{ menage.zone }}</strong>
+          avec
+          <strong>{{ formatNombre(menage.nombrePersonnes) }}</strong>
+          personne(s).
+        </p>
+
+      </div>
+
+    </article>
+
+
+    <!-- =========================
+         ACTIONS BAS DE PAGE
+         ========================= -->
+
+    <div class="bottom-actions">
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="retourListe()"
+      >
+        <i class="bi bi-arrow-left"></i>
+        Retour à la liste
+      </button>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="modifier()"
+      >
+        <i class="bi bi-pencil-square"></i>
+        Modifier le ménage
+      </button>
+
+    </div>
+
+  }
+
+</section>

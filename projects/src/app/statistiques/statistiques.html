@@ -1,0 +1,588 @@
+<section class="statistics-page">
+
+  <!-- ========================================================
+       HEADER
+  ========================================================= -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        ANALYSE DU RECENSEMENT
+      </span>
+
+      <h1>
+        Statistiques
+      </h1>
+
+      <p>
+        Vue synthétique des principales données du recensement.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="chargerStatistiques()"
+      [disabled]="loading"
+    >
+
+      <i class="bi bi-arrow-clockwise"></i>
+
+      <span>
+        {{ loading ? 'Actualisation...' : 'Actualiser' }}
+      </span>
+
+    </button>
+
+  </header>
+
+
+  <!-- ========================================================
+       ERREUR
+  ========================================================= -->
+
+  @if (error) {
+
+    <div class="error-box">
+
+      <div class="error-icon">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+
+      <div>
+
+        <strong>
+          Erreur de chargement
+        </strong>
+
+        <p>
+          {{ error }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        (click)="chargerStatistiques()"
+      >
+        Réessayer
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ========================================================
+       LOADING
+  ========================================================= -->
+
+  @if (loading) {
+
+    <div class="loading-grid">
+
+      @for (item of [1,2,3,4,5,6,7,8]; track item) {
+
+        <div class="skeleton-card">
+
+          <div class="skeleton skeleton-icon"></div>
+
+          <div class="skeleton-content">
+
+            <div class="skeleton skeleton-title"></div>
+
+            <div class="skeleton skeleton-value"></div>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+
+  @if (!loading && statistiques) {
+
+    <!-- ======================================================
+         8 STATISTIQUES
+    ======================================================= -->
+
+    <div class="stats-grid">
+
+
+      <!-- 1 - POPULATION -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon population">
+          <i class="bi bi-people-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            POPULATION TOTALE
+          </span>
+
+          <strong>
+            {{ formatNombre(populationTotale) }}
+          </strong>
+
+          <small>
+            personnes recensées
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- 2 - MENAGES -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon menages">
+          <i class="bi bi-house-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            MÉNAGES
+          </span>
+
+          <strong>
+            {{ formatNombre(nombreMenages) }}
+          </strong>
+
+          <small>
+            ménages enregistrés
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- 3 - TAILLE MOYENNE -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon taille">
+          <i class="bi bi-person-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            TAILLE MOYENNE
+          </span>
+
+          <strong>
+            {{ formatDecimal(tailleMoyenne) }}
+          </strong>
+
+          <small>
+            personnes par ménage
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- 4 - ZONES -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon zones">
+          <i class="bi bi-geo-alt-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            ZONES
+          </span>
+
+          <strong>
+            {{ nombreZones }}
+          </strong>
+
+          <small>
+            zones couvertes
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- 5 - ZONE LA PLUS PEUPLEE -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon top">
+          <i class="bi bi-trophy-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            ZONE LA PLUS PEUPLÉE
+          </span>
+
+          <strong class="text-value">
+            {{ zonePlusPeuplee }}
+          </strong>
+
+          <small>
+            plus forte population
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- 6 - ZONE LA PLUS JEUNE -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon young">
+          <i class="bi bi-arrow-down-circle-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            ZONE LA PLUS JEUNE
+          </span>
+
+          <strong class="text-value">
+            {{ zonePlusJeune }}
+          </strong>
+
+          <small>
+            âge moyen le plus bas
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- 7 - ZONE LA PLUS AGEE -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon old">
+          <i class="bi bi-arrow-up-circle-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            ZONE LA PLUS ÂGÉE
+          </span>
+
+          <strong class="text-value">
+            {{ zonePlusAgee }}
+          </strong>
+
+          <small>
+            âge moyen le plus élevé
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <!-- 8 - SURPEUPLEMENT -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon warning">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+
+        <div>
+
+          <span>
+            SURPEUPLEMENT
+          </span>
+
+          <strong class="text-value">
+            {{ zoneSurpeuplee }}
+          </strong>
+
+          <small>
+            taux le plus élevé
+          </small>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- ======================================================
+         GRAPHIQUES
+    ======================================================= -->
+
+    <div class="charts-grid">
+
+
+      <!-- ====================================================
+           GRAPHIQUE BARRES
+      ===================================================== -->
+
+      <article class="chart-card">
+
+        <div class="chart-header">
+
+          <div>
+
+            <span class="chart-eyebrow">
+              RÉPARTITION
+            </span>
+
+            <h2>
+              Population par zone
+            </h2>
+
+            <p>
+              Comparaison du nombre d'habitants recensés.
+            </p>
+
+          </div>
+
+          <div class="chart-badge">
+            <i class="bi bi-bar-chart-fill"></i>
+          </div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+          <canvas
+            baseChart
+            [type]="populationBarChartType"
+            [data]="populationBarChartData"
+            [options]="populationBarChartOptions"
+          ></canvas>
+
+        </div>
+
+      </article>
+
+
+      <!-- ====================================================
+           GRAPHIQUE DOUGHNUT
+      ===================================================== -->
+
+      <article class="chart-card">
+
+        <div class="chart-header">
+
+          <div>
+
+            <span class="chart-eyebrow">
+              RÉPARTITION
+            </span>
+
+            <h2>
+              Ménages par zone
+            </h2>
+
+            <p>
+              Répartition des ménages entre les différentes zones.
+            </p>
+
+          </div>
+
+          <div class="chart-badge">
+            <i class="bi bi-pie-chart-fill"></i>
+          </div>
+
+        </div>
+
+
+        <div class="chart-container pie-container">
+
+          <canvas
+            baseChart
+            [type]="zonesPieChartType"
+            [data]="zonesPieChartData"
+            [options]="zonesPieChartOptions"
+          ></canvas>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- ======================================================
+         TABLEAU
+    ======================================================= -->
+
+    <article class="table-card">
+
+      <div class="table-header">
+
+        <div>
+
+          <span class="chart-eyebrow">
+            DÉTAIL PAR ZONE
+          </span>
+
+          <h2>
+            Données du recensement
+          </h2>
+
+        </div>
+
+        <span class="zone-count">
+          {{ nombreZones }} zones
+        </span>
+
+      </div>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                ZONE
+              </th>
+
+              <th>
+                MÉNAGES
+              </th>
+
+              <th>
+                POPULATION
+              </th>
+
+              <th>
+                ÂGE MOYEN
+              </th>
+
+              <th>
+                TAILLE MOYENNE
+              </th>
+
+              <th>
+                SURPEUPLEMENT
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+              zone of statistiques.statistiquesParZone;
+              track zone.zone
+            ) {
+
+              <tr>
+
+                <td>
+
+                  <div class="zone-name">
+
+                    <span class="zone-icon">
+                      <i class="bi bi-geo-alt-fill"></i>
+                    </span>
+
+                    <strong>
+                      {{ zone.zone }}
+                    </strong>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+                  {{ formatNombre(zone.nombreMenages) }}
+                </td>
+
+
+                <td>
+                  <strong>
+                    {{ formatNombre(zone.populationTotale) }}
+                  </strong>
+                </td>
+
+
+                <td>
+                  {{ formatDecimal(zone.ageMoyen) }} ans
+                </td>
+
+
+                <td>
+                  {{ formatDecimal(zone.tailleMoyenneMenage) }}
+                </td>
+
+
+                <td>
+
+                  <div class="rate">
+
+                    <div class="rate-bar">
+
+                      <span
+                        [style.width.%]="
+                          Math.min(
+                            Number(zone.tauxSurpeuplement ?? 0),
+                            100
+                          )
+                        "
+                      ></span>
+
+                    </div>
+
+                    <strong>
+                      {{ formatDecimal(zone.tauxSurpeuplement) }}%
+                    </strong>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </article>
+
+  }
+
+</section>
